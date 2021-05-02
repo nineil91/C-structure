@@ -1,0 +1,127 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#define SWAP(x, y, t) ((t)=(x),(x)=(y),(y)=(t))
+#define N 100000
+
+void printArray(int arr[], int n, char* str);
+void printStep(int arr[], int n, int val);
+void selection_sort(int list_selection[], int n);//선택정렬
+void insertion_sort(int list_insertiont[], int n);//삽입정렬
+void bubble_sort(int list_bubble[], int n);//버블정렬
+int list[N];
+int list_selection[N];
+int list_insertion[N];
+int list_bubble[N];
+int n, count_se = 0, count_in = 0, count_bu = 0;
+void ran();
+clock_t start, finish;
+double duration;
+
+void main() {
+	
+	ran();
+	//printArray(list, N, "Original ");
+	selection_sort(list, N);
+	//printArray(list_selection, N, "Selection");
+	printf("선택정렬 횟수 : %d\n", count_se);
+	insertion_sort(list, N);
+	//printArray(list_insertion, N, "insertion");
+	printf("삽입정렬 횟수 : %d\n", count_in);
+	bubble_sort(list, N);
+	//printArray(list_bubble, N, "bubble");
+	printf("버블정렬 횟수 : %d\n", count_bu);
+}
+
+void printArray(int arr[], int n, char* str) {
+	int i;
+	printf("%s = ", str);
+	for (i = 0; i < n; i++) {
+		printf("%3d", arr[i]);
+	}
+	printf("\n");
+}
+
+void printStep(int arr[], int n, int val) {
+	int i;
+	printf("  Step %2d = ", val);
+	for (i = 0; i < n; i++) {
+		printf("%3d", arr[i]);
+	}
+	printf("\n");
+}
+void selection_sort(int list_selectiont[], int n) {
+	int i, j, least, tmp;
+	start = clock();
+	for (i = 0; i < n - 1; i++) {
+		least = i;
+		for (j = i + 1; j < n; j++) {
+			if (list_selection[j] < list_selection[least]) {
+				least = j;
+			}
+		}
+		SWAP(list_selection[i], list_selection[least], tmp);
+		//count_se++;
+	}
+	finish = clock();
+	duration = (double)(finish - start) / CLOCKS_PER_SEC;
+	printf("선택정렬%f 초입니다\n", duration);
+}
+
+void insertion_sort(int list_insertiont[], int n) {
+	int i, j, key;
+	start = clock();
+	for (i = 1; i < n; i++) {
+		key = list_insertiont[i];
+		for (j = i - 1; j > 0 && list_insertion[j] > key; j--) {
+			list_insertion[j + 1] = list_insertion[j];
+		}
+		list_insertion[j + 1] = key;
+		//count_in++;
+	}
+	finish = clock();
+	duration = (double)(finish - start) / CLOCKS_PER_SEC;
+	printf("삽입정렬 %f 초입니다\n", duration);
+	
+}
+
+void bubble_sort(int list_bubble[], int n) {
+	int i, j, bChanged, tmp, count=0;
+	start = clock();
+	for (i = n - 1; i > 0; i--) {
+		bChanged = 0;
+		for (j = 0; j < i; j++) {
+			if (list_bubble[j] > list_bubble[j + 1]) {
+				SWAP(list_bubble[j], list_bubble[j + 1], tmp);
+				bChanged = 1;
+			}
+		}
+		if (!bChanged) {
+			break;
+		}
+		//count_bu++;
+	}
+	finish = clock();
+	duration = (double)(finish - start) / CLOCKS_PER_SEC;
+	printf("버블정렬 %f 초입니다\n", duration);
+	
+
+}
+
+void ran() {
+
+	int i;
+
+	srand((unsigned)time(NULL));      // 초기화
+
+	for (i = 0; i < N; i++) {
+		n = rand();
+		list[i] = n;
+		list_selection[i] = n;
+		list_insertion[i] = n;
+		list_bubble[i] = n;
+	}
+
+
+	return list;
+}
